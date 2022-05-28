@@ -1,5 +1,5 @@
 const { Client, Intents, MessageEmbed } = require('discord.js');
-const { createAudioPlayer, createAudioResource, joinVoiceChannel} = require('@discordjs/voice');
+const { createAudioPlayer, createAudioResource, joinVoiceChannel, AudioPlayerStatus} = require('@discordjs/voice');
 const ytdl = require('ytdl-core');
 const { prefix } = require('./config.json');
 const client = new Client({intents: [
@@ -14,6 +14,7 @@ let connection = null;
 let player = createAudioPlayer();
 let queue = [];
 let isPlaying = false;
+let resourceMsg;
 client.on('messageCreate', async msg => {
     //contain .p
     if (msg.content.indexOf(`${prefix}p`) > -1) {
@@ -25,6 +26,7 @@ client.on('messageCreate', async msg => {
                     adapterCreator: msg.guild.voiceAdapterCreator
                 });
                 connection.subscribe(player);
+                resourceMsg = msg;
             } else {
                 msg.channel.send({
                     embeds: [
@@ -65,6 +67,7 @@ client.on('messageCreate', async msg => {
                             .setURL(queue[0].url)
                             .setTimestamp()
                     ]});
+
                 player.play(createAudioResource(ytdl(queue[0].url, { filter: 'audioonly' })));
                 queue.shift();
             }
@@ -130,9 +133,9 @@ client.on('messageCreate', async msg => {
     }
     //.leave
     if (msg.content === `${prefix}leave` || msg.content === `${prefix}die`) {
-        if (this.connection != null && this.connection.state.status !== "destroyed") {
+        if (connection != null && connection.state.status !== "destroyed") {
             connection.destroy();
-            play.stop();
+            player.stop();
             queue = [];
             isPlaying = false;
             msg.channel.send({embeds: [
@@ -167,23 +170,32 @@ client.on('messageCreate', async msg => {
             ]
         });
     }
-    //continue playing if still music in queue
-    player.on("idle", async () => {
-        if (queue.length > 0) {
-            player.play(createAudioResource(ytdl(queue[0].url, { filter: 'audioonly' })));
-            queue.shift();
-        } else {
-            if (isPlaying === true) {
-                isPlaying = false;
-                msg.channel.send({embeds: [
-                        new MessageEmbed()
-                            .setColor('#3498DB')
-                            .setTitle('End of queue')
-                            .setDescription('.help for commands')
-                            .setTimestamp()
-                    ]});
-                connection.destroy();
-            }
-        }
-    });
 })
+//continue playing if there are still tracks in queue
+player.on("idle", () => {
+    if (queue.length > 0) {
+        resourceMsg.channel.send({embeds: [
+                new MessageEmbed()
+                    .setColor('#3498DB')
+                    .setTitle('Now playing:')
+                    .setDescription(queue[0].name)
+                    .setURL(queue[0].url)
+                    .setTimestamp()
+            ]});
+        resource = createAudioResource(ytdl(queue[0].url, { filter: 'audioonly' }));
+        player.play(resource);
+        queue.shift();
+    } else {
+        if (isPlaying === true) {
+            isPlaying = false;
+            resourceMsg.channel.send({embeds: [
+                    new MessageEmbed()
+                        .setColor('#3498DB')
+                        .setTitle('End of queue')
+                        .setDescription('.help for commands')
+                        .setTimestamp()
+                ]});
+            connection.destroy();
+        }
+    }
+});
