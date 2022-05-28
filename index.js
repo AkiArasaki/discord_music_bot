@@ -7,7 +7,7 @@ const client = new Client({intents: [
         Intents.FLAGS.GUILD_MESSAGES,
         Intents.FLAGS.GUILD_VOICE_STATES
     ]});
-client.login("OTc5ODc2MTAyMTM2ODA3NDM1.GlUW3i.lbVa9pEySTm0U3sgrqYb7SDeNJWkGd1iafPTeI").then(r => {
+client.login("Your token").then(r => {
     console.log(`Logged in as ${client.user.tag}!`);
 });
 let connection = null;
@@ -163,20 +163,6 @@ client.on('messageCreate', async msg => {
                         '.skip - skip current track\n' +
                         '.queue - view queue\n' +
                         '.leave - make bot leave voice channel'
-                    )
-            ]
-        });
-    }
-    //.server
-    if (msg.content === `${prefix}server`) {
-        msg.channel.send({
-            embeds: [
-                new MessageEmbed()
-                    .setColor('#50C878')
-                    .setTitle('Server info:')
-                    .setDescription(
-                        'Server IP: AkiArasaki.aternos.me\n' +
-                        'Latest mod pack: https://drive.google.com/file/d/1fz8-d2WO6oYY5Oa9jsC3hXECCdpYgQvR/view?usp=sharing'
                     )
             ]
         });
