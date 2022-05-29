@@ -14,7 +14,6 @@ let connection = null;
 let player = createAudioPlayer();
 let queue = [];
 let isPlaying = false;
-let resourceMsg;
 client.on('messageCreate', async msg => {
     //contain .p
     if (msg.content.indexOf(`${prefix}p`) > -1) {
@@ -26,7 +25,6 @@ client.on('messageCreate', async msg => {
                     adapterCreator: msg.guild.voiceAdapterCreator
                 });
                 connection.subscribe(player);
-                resourceMsg = msg;
             } else {
                 msg.channel.send({
                     embeds: [
@@ -43,6 +41,7 @@ client.on('messageCreate', async msg => {
             const res = await ytdl.getInfo(musicURL);
             const info = res.videoDetails;
             queue.push({
+                queuedMsg: msg,
                 name: info.title,
                 url: musicURL
             })
@@ -174,7 +173,7 @@ client.on('messageCreate', async msg => {
 //continue playing if there are still tracks in queue
 player.on("idle", () => {
     if (queue.length > 0) {
-        resourceMsg.channel.send({embeds: [
+        queue[0].queuedMsg.channel.send({embeds: [
                 new MessageEmbed()
                     .setColor('#3498DB')
                     .setTitle('Now playing:')
