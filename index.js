@@ -14,6 +14,7 @@ let connection = null;
 let player = createAudioPlayer();
 let queue = [];
 let isPlaying = false;
+let resourceMsg;
 client.on('messageCreate', async msg => {
     //contain .p
     if (msg.content.indexOf(`${prefix}p`) > -1) {
@@ -25,6 +26,7 @@ client.on('messageCreate', async msg => {
                     adapterCreator: msg.guild.voiceAdapterCreator
                 });
                 connection.subscribe(player);
+                resourceMsg = msg;
             } else {
                 msg.channel.send({
                     embeds: [
