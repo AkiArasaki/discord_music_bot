@@ -1,0 +1,11 @@
+{
+  "name": "GroovyBackup",
+  "version": "1.0.0",
+  "dependencies": {
+    "@discordjs/voice": "^0.11.0",
+    "discord.js": "^14.1.2",
+    "ffmpeg-static": "^5.0.2",
+    "play-dl": "^1.9.5",
+    "tweetnacl": "^1.0.3"
+  }
+}
