@@ -5,4 +5,5 @@ Fill in your token, run index.js under node.js environment. Enjoy!
 Update to discord.js V13<br>
 Update to discord.js V14<br>
 Change download engine to play-dl<br>
-Support multiple servers
+Support multiple servers<br>
+New Function, search music by key words
