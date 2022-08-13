@@ -15,4 +15,5 @@ Update to discord.js V13<br>
 Update to discord.js V14<br>
 Change download engine to play-dl<br>
 Support multiple servers<br>
-New Function, search music by key words
+New Function, search music by key words<br>
+Support adding playlist into queue
