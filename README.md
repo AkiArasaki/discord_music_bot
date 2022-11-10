@@ -16,4 +16,5 @@ Update to discord.js V14<br>
 Change download engine to play-dl<br>
 Support multiple servers<br>
 New Function, search music by key words<br>
-Support playlist
+Support playlist<br>
+New Function, get lyrics
