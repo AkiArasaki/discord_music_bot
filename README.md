@@ -8,6 +8,7 @@ ${prefix}resume - resume music from playing<br>
 ${prefix}pause - pause music from playing<br>
 ${prefix}skip - skip current track<br>
 ${prefix}queue - view queue<br>
+${prefix}lyrics - get lyrics<br>
 ${prefix}leave - make bot leave voice channel<br>
 ${prefix}help - show command list
 # updates
